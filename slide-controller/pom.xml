@@ -11,7 +11,7 @@
 	<groupId>com.snir</groupId>
 	<artifactId>slide-show</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>slide-show</name>
+	<name>slide-controller</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
