@@ -2,5 +2,25 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.snir</groupId>
   <artifactId>spring-jdbc</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>   
+  <dependencies>
+  
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-jdbc</artifactId>
+  		<version>6.1.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>mysql</groupId>
+  		<artifactId>mysql-connector-java</artifactId>
+  		<version>8.0.33</version>
+  	</dependency>
+
+
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-context</artifactId>
+  		<version>6.1.0</version>
+  	</dependency>
+  </dependencies>
 </project>

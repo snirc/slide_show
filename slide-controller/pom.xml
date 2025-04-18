@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.snir</groupId>
-	<artifactId>slide-show</artifactId>
+	<artifactId>slide-controller</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>slide-controller</name>
 	<description>Demo project for Spring Boot</description>
