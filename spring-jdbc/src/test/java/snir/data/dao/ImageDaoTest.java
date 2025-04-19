@@ -49,15 +49,41 @@ class ImageDaoTest {
 	@Test
 	void testAddSlideShow() {
 		String name = "Test Slide Show";
-		String email = "test@example.com";
-		when(jdbcTemplate.update(anyString(), eq(name), eq(email))).thenReturn(1);
+		
+		when(jdbcTemplate.update(anyString(), eq(name))).thenReturn(1);
 
-		int rowsAffected = imageDao.addSlideShow(name, email);
+		int rowsAffected = imageDao.addSlideShow(name);
 
 		assertEquals(1, rowsAffected);
-		verify(jdbcTemplate, times(1)).update(anyString(), eq(name), eq(email));
+		verify(jdbcTemplate, times(1)).update(anyString(), eq(name));
 	}
 
+	public List<ImageSlideDTO> getSlideImages(int slideShowId) {
+    String sql = """
+            SELECT
+                i.id AS image_id,
+                i.name AS image_name,
+                i.url,
+                s.id AS slide_show_id,
+                s.name AS slide_show_name
+            FROM slide.image i
+            JOIN slide.slide_show_images si ON i.id = si.image_id
+            JOIN slide.slide_show s ON s.id = si.slide_show_id
+            WHERE s.id = ?
+            ORDER BY i.id
+            """;
+
+    return jdbcTemplate.query(sql, new Object[] { slideShowId },
+            (rs, rowNum) -> new ImageSlideDTO(
+                    rs.getInt("image_id"),
+                    rs.getString("image_name"),
+                    rs.getString("url"),
+                    rs.getInt("slide_show_id"),
+                    rs.getString("slide_show_name")
+            ));
+}
+
+	
 	@Test
 	void testSearchImages() {
 		String keyword = "test";
