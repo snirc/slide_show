@@ -3,12 +3,21 @@
   <groupId>com.snir</groupId>
   <artifactId>spring-jdbc</artifactId>
   <version>0.0.1-SNAPSHOT</version>   
+  <properties>
+		<java.version>24</java.version>
+  </properties>
+  <parent>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-parent</artifactId>
+  <version>3.4.4</version> <!-- Or 3.4.4 if you're using Java 24 -->
+</parent>
+
   <dependencies>
   
   	<dependency>
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-jdbc</artifactId>
-  		<version>6.1.0</version>
+  		
   	</dependency>
   	<dependency>
   		<groupId>mysql</groupId>
@@ -20,7 +29,44 @@
   	<dependency>
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-context</artifactId>
-  		<version>6.1.0</version>
+  		</dependency>
+  	<dependency>
+  		<groupId>org.junit.jupiter</groupId>
+  		<artifactId>junit-jupiter</artifactId>
+  		<scope>test</scope>
   	</dependency>
+  	<dependency>
+  		<groupId>org.mockito</groupId>
+  		<artifactId>mockito-core</artifactId>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.mockito</groupId>
+  		<artifactId>mockito-junit-jupiter</artifactId>
+  		<scope>test</scope>
+  	</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-reload4j</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+
+  	<dependency>
+  		<groupId>org.springframework.boot</groupId>
+  		<artifactId>spring-boot-starter-test</artifactId>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <!-- Use the latest version -->
+</dependency>
+
+
   </dependencies>
 </project>
