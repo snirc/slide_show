@@ -162,6 +162,40 @@ public class ImageDao {
 				(rs, rowNum) -> new ImageSlideDTO(rs.getInt("image_id"), rs.getString("image_name"),
 						rs.getString("url"), rs.getInt("slide_show_id"), rs.getString("slide_show_name"), rs.getInt("duration")));
 	}
+	
+	/**
+	 * Deletes an image by its ID from the database and removes it from all slide
+	 * shows.
+	 *
+	 * @param imageId the ID of the image to be deleted
+	 * @return the number of rows affected
+	 */
+	public int deleteImageById(int imageId) {
+	    // Step 1: Remove image from all slideshows
+	    String deleteFromSlides = "DELETE FROM slide.slide_show_images WHERE image_id = ?";
+	    jdbcTemplate.update(deleteFromSlides, imageId);
+
+	    // Step 2: Delete the image itself
+	    String deleteImage = "DELETE FROM slide.image WHERE id = ?";
+	    return jdbcTemplate.update(deleteImage, imageId);
+	}
+	
+	/**
+	 * Deletes a slide show by its ID from the database and removes all associated
+	 * images.
+	 *
+	 * @param slideShowId the ID of the slide show to be deleted
+	 * @return the number of rows affected
+	 */
+	public int deleteSlideShowById(int slideShowId) {
+	    // Step 1: Remove all image associations from this slideshow
+	    String deleteLinks = "DELETE FROM slide.slide_show_images WHERE slide_show_id = ?";
+	    jdbcTemplate.update(deleteLinks, slideShowId);
+
+	    // Step 2: Delete the slideshow itself
+	    String deleteSlideShow = "DELETE FROM slide.slide_show WHERE id = ?";
+	    return jdbcTemplate.update(deleteSlideShow, slideShowId);
+	}
 
 }
 

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -104,6 +105,36 @@ class ImageDaoTest {
 		assertEquals(1, results.get(0).getSlideShowId());
 		assertEquals("SlideShow1", results.get(0).getSlideShowName());
 		verify(jdbcTemplate, times(1)).query(anyString(), any(Object[].class), any(RowMapper.class));
+	}
+	
+	@Test
+	void testDeleteImageById() {
+	    int imageId = 1;
+
+	    when(jdbcTemplate.update(contains("slide_show_images"), eq(imageId))).thenReturn(2); // 2 links removed
+	    when(jdbcTemplate.update(contains("image"), eq(imageId))).thenReturn(1); // 1 image deleted
+
+	    int result = imageDao.deleteImageById(imageId);
+
+	    assertEquals(1, result); // We expect 1 image row to be deleted
+	    verify(jdbcTemplate, times(1)).update(contains("slide_show_images"), eq(imageId));
+	    verify(jdbcTemplate, times(1)).update(contains("slide.image"), eq(imageId));
+
+	}
+
+	@Test
+	void testDeleteSlideShowById() {
+	    int slideShowId = 10;
+
+	    when(jdbcTemplate.update(contains("slide_show_images"), eq(slideShowId))).thenReturn(3); // 3 links removed
+	    when(jdbcTemplate.update(contains("slide_show"), eq(slideShowId))).thenReturn(1); // slideshow deleted
+
+	    int result = imageDao.deleteSlideShowById(slideShowId);
+
+	    assertEquals(1, result); // Expect 1 slideshow deleted
+	    verify(jdbcTemplate, times(1)).update(contains("slide_show_images"), eq(slideShowId));
+	    verify(jdbcTemplate, times(1)).update(eq("DELETE FROM slide.slide_show WHERE id = ?"), eq(slideShowId));
+
 	}
 
 }
