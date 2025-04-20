@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.snir.slide_show.service.DataService;
+
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +23,10 @@ public class SlideController {
 
 	// POST /addImage
 	@PostMapping("/addImage")
-	public ResponseEntity<String> addImage(@RequestParam String imageUrl, @RequestParam int duration) {
+	public ResponseEntity<String> addImage(@RequestParam String imageName, @RequestParam String imageUrl, @RequestParam int duration) {
 		// Validate URL and check if it contains an image (JPEG, PNG, WEBP, etc.)
 		// Add logic to save the image and duration
-		return ResponseEntity.status(HttpStatus.CREATED).body("Image added successfully.");
+		return ResponseEntity.status(HttpStatus.CREATED).body(DataService.addImage(imageName, imageUrl, duration));
 	}
 
 	// DELETE /deleteImage/{id}

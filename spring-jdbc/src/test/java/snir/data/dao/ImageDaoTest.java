@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -38,9 +39,13 @@ class ImageDaoTest {
 	void testAddImage() {
 		String name = "Test Image";
 		String email = "test@example.com";
+		long duration = 3600;
+
+		when(jdbcTemplate.update(anyString(), eq(name), eq(email), eq(duration))).thenReturn(1);
+		
 		when(jdbcTemplate.update(anyString(), eq(name), eq(email))).thenReturn(1);
 
-		int rowsAffected = imageDao.addImage(name, email);
+		int rowsAffected = imageDao.addImage(name, email, duration);
 
 		assertEquals(1, rowsAffected);
 		verify(jdbcTemplate, times(1)).update(anyString(), eq(name), eq(email));

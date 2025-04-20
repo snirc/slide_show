@@ -3,6 +3,7 @@ package snir.data.dao;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.core.io.ClassPathResource;
@@ -58,16 +59,18 @@ public class ImageDao {
 		}
 	}
 
+
 	/**
 	 * Saves an image record to the database.
 	 *
-	 * @param name the name of the image
-	 * @param URL  the email associated with the image
+	 * @param name     the name of the image
+	 * @param url      the URL of the image
+	 * @param duration the duration of the image in seconds
 	 * @return the number of rows affected
 	 */
-	public int addImage(String name, String url) {
-		String sql = "INSERT INTO slide.image (name, url) VALUES (?, ?)";
-		return jdbcTemplate.update(sql, name, url);
+	public int addImage(String name, String url, long duration) {
+		String sql = "INSERT INTO slide.image (name, url, duration) VALUES (?, ?, ?)";
+		return jdbcTemplate.update(sql, name, url, duration);
 	}
 
 	/**
@@ -82,34 +85,42 @@ public class ImageDao {
 		return jdbcTemplate.update(sql, name);
 	}
 
+
 	/**
-	 * Saves a record in the slide_show_images table to associate an image with a
-	 * slide show.
+	 * Searches for images and their associated slide shows based on a keyword.
 	 *
-	 * @param imageId     the ID of the image
-	 * @param slideShowId the ID of the slide show
-	 * @return the number of rows affected
+	 * @param keyword the keyword to search for in image names, URLs, or slide show
+	 *                names
+	 * @return a list of ImageSlideDTO objects containing image and slide show information
 	 */
 	public List<ImageSlideDTO> searchImages(String keyword) {
-		String sql = """
-				SELECT
-				    i.id AS image_id,
-				    i.name AS image_name,
-				    i.url,
-				    s.id AS slide_show_id,
-				    s.name AS slide_show_name
-				FROM slide.image i
-				JOIN slide.slide_show_images si ON i.id = si.image_id
-				JOIN slide.slide_show s ON s.id = si.slide_show_id
-				WHERE i.name LIKE ? OR i.url LIKE ? OR s.name LIKE ?
-				ORDER BY i.id, s.id
-				""";
+	    String sql = """
+	        SELECT
+	            i.id AS image_id,
+	            i.name AS image_name,
+	            i.url,
+	            s.id AS slide_show_id,
+	            s.name AS slide_show_name
+	        FROM slide.image i
+	        JOIN slide.slide_show_images si ON i.id = si.image_id
+	        JOIN slide.slide_show s ON s.id = si.slide_show_id
+	        WHERE i.name LIKE ? OR i.url LIKE ? OR s.name LIKE ?
+	        ORDER BY i.id, s.id
+	        """;
 
-		String searchTerm = "%" + keyword + "%";
+	    String searchTerm = "%" + keyword + "%";
 
-		return jdbcTemplate.query(sql, new Object[] { searchTerm, searchTerm, searchTerm },
-				(rs, rowNum) -> new ImageSlideDTO(rs.getInt("image_id"), rs.getString("image_name"),
-						rs.getString("url"), rs.getInt("slide_show_id"), rs.getString("slide_show_name")));
+	    return jdbcTemplate.query(
+	        sql,
+	        new Object[] { searchTerm, searchTerm, searchTerm },
+	        (rs, rowNum) -> new ImageSlideDTO(
+	            rs.getInt("image_id"),
+	            rs.getString("image_name"),
+	            rs.getString("url"),
+	            rs.getInt("slide_show_id"),
+	            rs.getString("slide_show_name")
+	        )
+	    );
 	}
 
 	/**
