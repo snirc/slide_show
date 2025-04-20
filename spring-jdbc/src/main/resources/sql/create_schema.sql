@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS slide.image (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     url VARCHAR(500) NOT NULL,
-    duration BIGINT,
+    duration INT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

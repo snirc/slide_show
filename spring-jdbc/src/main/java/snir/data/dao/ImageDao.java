@@ -100,7 +100,8 @@ public class ImageDao {
 	            i.name AS image_name,
 	            i.url,
 	            s.id AS slide_show_id,
-	            s.name AS slide_show_name
+	            s.name AS slide_show_name,
+	            i.duration
 	        FROM slide.image i
 	        JOIN slide.slide_show_images si ON i.id = si.image_id
 	        JOIN slide.slide_show s ON s.id = si.slide_show_id
@@ -118,7 +119,8 @@ public class ImageDao {
 	            rs.getString("image_name"),
 	            rs.getString("url"),
 	            rs.getInt("slide_show_id"),
-	            rs.getString("slide_show_name")
+	            rs.getString("slide_show_name"),
+	            rs.getInt("duration") // Assuming duration is also selected
 	        )
 	    );
 	}
@@ -147,7 +149,8 @@ public class ImageDao {
 				    i.name AS image_name,
 				    i.url,
 				    s.id AS slide_show_id,
-				    s.name AS slide_show_name
+				    s.name AS slide_show_name,
+				    i.duration
 				FROM slide.image i
 				JOIN slide.slide_show_images si ON i.id = si.image_id
 				JOIN slide.slide_show s ON s.id = si.slide_show_id
@@ -157,7 +160,13 @@ public class ImageDao {
 
 		return jdbcTemplate.query(sql, new Object[] { slideShowId },
 				(rs, rowNum) -> new ImageSlideDTO(rs.getInt("image_id"), rs.getString("image_name"),
-						rs.getString("url"), rs.getInt("slide_show_id"), rs.getString("slide_show_name")));
+						rs.getString("url"), rs.getInt("slide_show_id"), rs.getString("slide_show_name"), rs.getInt("duration")));
 	}
 
 }
+
+
+
+
+
+

@@ -35,21 +35,20 @@ class ImageDaoTest {
     @InjectMocks
     private ImageDao imageDao;
 
-	@Test
-	void testAddImage() {
-		String name = "Test Image";
-		String email = "test@example.com";
-		long duration = 3600;
+    @Test
+    void testAddImage() {
+        String name = "Test Image";
+        String url = "test@example.com";
+        long duration = 10;
 
-		when(jdbcTemplate.update(anyString(), eq(name), eq(email), eq(duration))).thenReturn(1);
-		
-		when(jdbcTemplate.update(anyString(), eq(name), eq(email))).thenReturn(1);
+        when(jdbcTemplate.update(anyString(), eq(name), eq(url), eq(duration))).thenReturn(1);
 
-		int rowsAffected = imageDao.addImage(name, email, duration);
+        int rowsAffected = imageDao.addImage(name, url, duration);
 
-		assertEquals(1, rowsAffected);
-		verify(jdbcTemplate, times(1)).update(anyString(), eq(name), eq(email));
-	}
+        assertEquals(1, rowsAffected);
+        verify(jdbcTemplate, times(1)).update(anyString(), eq(name), eq(url), eq(duration));
+    }
+
 
 	@Test
 	void testAddSlideShow() {
@@ -84,7 +83,8 @@ class ImageDaoTest {
                     rs.getString("image_name"),
                     rs.getString("url"),
                     rs.getInt("slide_show_id"),
-                    rs.getString("slide_show_name")
+                    rs.getString("slide_show_name"),
+                    rs.getInt("duration")
             ));
 }
 
@@ -93,7 +93,7 @@ class ImageDaoTest {
 	void testSearchImages() {
 		String keyword = "test";
 		when(jdbcTemplate.query(anyString(), any(Object[].class), any(RowMapper.class)))
-	    .thenReturn(List.of(new ImageSlideDTO(1, "Image1", "url1", 1, "SlideShow1")));
+	    .thenReturn(List.of(new ImageSlideDTO(1, "Image1", "url1", 1, "SlideShow1", 10)));
 
 		List<ImageSlideDTO> results = imageDao.searchImages(keyword);
 
