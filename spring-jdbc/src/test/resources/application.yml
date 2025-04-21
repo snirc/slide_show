@@ -1,0 +1,22 @@
+server:
+  port: 8081
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: slide-consumer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      ack-mode: record
+      missing-topics-fatal: false
+    admin:
+      auto-create: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/your_db
+    username: root
+    password: shoko
+    driver-class-name: com.mysql.cj.jdbc.Driver

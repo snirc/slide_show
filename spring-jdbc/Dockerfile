@@ -9,3 +9,5 @@ COPY target/*.jar app.jar
 
 # Run the Spring Boot app
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+

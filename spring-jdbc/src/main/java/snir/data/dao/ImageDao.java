@@ -197,6 +197,11 @@ public class ImageDao {
 	    return jdbcTemplate.update(deleteSlideShow, slideShowId);
 	}
 
+	public void recordProofOfPlay(int slideShowId, int imageId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 

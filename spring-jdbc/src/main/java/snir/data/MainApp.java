@@ -14,7 +14,7 @@ public class MainApp {
 		ImageDao imageDao = context.getBean(ImageDao.class);
 		try {
 			imageDao.createSchemaIfNotExists("create_schema.sql");
-			//runTest();
+			runTest();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,10 +35,11 @@ public class MainApp {
 			imageDao.addImage("test3x"+randomNum, "http://test3x.jpg"+randomNum, randomNum);
 			imageDao.addSlideShow("slide"+randomNum);
 			
-			Integer[] imageIds = { 4,5,6,7,8,9,10 };
-			imageDao.addImagesToSlideShow(4, Arrays.asList(imageIds));
-			System.out.println(imageDao.getSlideImages(3));
-			System.out.println(imageDao.searchImages("test5"));
+			/*
+			 * Integer[] imageIds = { 4,5,6,7,8,9,10 }; imageDao.addImagesToSlideShow(4,
+			 * Arrays.asList(imageIds)); System.out.println(imageDao.getSlideImages(3));
+			 * System.out.println(imageDao.searchImages("test5"));
+			 */
 			
 		} catch (Exception e) {
 			e.printStackTrace();
